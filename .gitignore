@@ -5,3 +5,5 @@ lib
 tests/
 .envrc
 __pycache__
+launch_flask.bat
+launch_test.bat
