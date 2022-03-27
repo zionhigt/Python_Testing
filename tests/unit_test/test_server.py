@@ -32,7 +32,7 @@ class TestServer(TestCase):
             for cl in self.clubs:
                 mock = {
                     "club": cl.get('name'),
-                    "competition": com.get('name'),
+                    "competition": "TEST_COMPETITION_2",
                     "places": int(cl.get('points')) + 1
                 }                
                 response = self.client.post('/purchasePlaces', data=mock)
