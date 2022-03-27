@@ -1,9 +1,14 @@
 {
     "clubs":[
         {
-            "name":"TEST_CLUB",
-            "email":"TEST_CLUB_EMAIL",
+            "name":"TEST_CLUB_1",
+            "email":"TEST_CLUB_EMAIL_1",
             "points":"9"
+        },
+        {
+            "name":"TEST_CLUB_2",
+            "email":"TEST_CLUB_EMAIL_2",
+            "points":"10"
         }
     ],
     "competitions": [
