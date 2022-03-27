@@ -7,7 +7,6 @@ from server import loadClubs, loadCompetitions
 
 @mark.usefixtures('client', 'clubs', 'competitions')
 class TestServer(TestCase):
-
     def test_loadClubs(self):
         self.assertListEqual(loadClubs("./tests/unit_test/mocks_files/fixture_load.json"), self.clubs)
 
@@ -60,10 +59,10 @@ class TestServer(TestCase):
     def test_club_points_should_be_reflected_after_booking(self):
         places = 1
         club = self.clubs[0]
-        competition = self.competitions[1]
         points = int(club.get("points"))
+        competition = self.competitions[1]
         number_of_places = int(competition.get("numberOfPlaces"))
-        self.client.post('/purchasePlaces', data={
+        response = self.client.post('/purchasePlaces', data={
             "club": club.get("name"),
             "competition": competition.get("name"),
             "places": places
