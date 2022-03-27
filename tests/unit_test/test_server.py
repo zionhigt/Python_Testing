@@ -35,7 +35,7 @@ class TestServer(TestCase):
                     "competition": com.get('name'),
                     "places": int(cl.get('points')) + 1
                 }
-                
+                                
                 response = self.client.post('/purchasePlaces', data=mock)
                 self.assertIn("You haven&#39;t enough of points to purshase this!", response.data.decode())
                 self.assertEqual(response.status_code, 403)

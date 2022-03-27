@@ -9,7 +9,7 @@ def get_clubs():
             {
                 "name":"TEST_CLUB",
                 "email":"TEST_CLUB_EMAIL",
-                "points":"13"
+                "points":"10"
             }
         ]
 
