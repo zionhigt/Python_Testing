@@ -54,4 +54,5 @@ class TestServer(TestCase):
             "competition": "TEST_COMPETITION_2",
             "places": 1
         })
+        self.assertIn("Unable to require places for already been passed competion !", response.data.decode())
         self.assertEqual(response.status_code, 403)
