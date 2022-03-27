@@ -16,8 +16,13 @@ def get_clubs():
 def get_competitions():
     return [
             {
-                "name": "TEST_COMPETITION",
+                "name": "TEST_COMPETITION_1",
                 "date": "2020-03-27 10:00:00",
+                "numberOfPlaces": "25"
+            },
+            {
+                "name": "TEST_COMPETITION_2",
+                "date": "2025-03-27 10:00:00",
                 "numberOfPlaces": "25"
             }
         ]
