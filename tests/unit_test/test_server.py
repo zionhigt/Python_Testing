@@ -1,4 +1,3 @@
-from unittest.mock import patch
 from unittest import TestCase
 
 from pytest import mark
@@ -18,3 +17,12 @@ class TestServer(TestCase):
     def test_sould_login_in_out(self):
         response = self.client.get("/logout")
         self.assertEqual(response.status_code, 302)
+
+    def test_sould_connect_with_email_exists(self):
+        for cl in self.clubs:
+            response = self.client.post("/showSummary", data={'email': cl.get('email')})
+            self.assertEqual(response.status_code, 200)
+
+    def test_sould_no_connect_with_email_does_not_exists(self):
+        response = self.client.post("/showSummary", data={'email': "not_exists_email@test.com"})
+        assert response.status_code == 401
