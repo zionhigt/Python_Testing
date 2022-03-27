@@ -56,3 +56,13 @@ class TestServer(TestCase):
         })
         self.assertIn("Unable to require places for already been passed competion !", response.data.decode())
         self.assertEqual(response.status_code, 403)
+    
+    def test_club_points_should_be_reflected_after_booking(self):
+        club = self.clubs[0]
+        points = int(club.get("points"))
+        self.client.post('/purchasePlaces', data={
+            "club": club.get("name"),
+            "competition": "TEST_COMPETITION_2",
+            "places": 1
+        })
+        self.assertEqual(int(club.get('points')), points - 1)

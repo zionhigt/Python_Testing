@@ -34,7 +34,7 @@ def clubs(request):
 
 @pytest.fixture(scope="class")
 def competitions(request):
-    request.cls.competitions =  get_competitions()
+    request.cls.competitions = get_competitions()
     yield
 
 @pytest.fixture(scope="class")
