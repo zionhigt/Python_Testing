@@ -58,11 +58,15 @@ class TestServer(TestCase):
         self.assertEqual(response.status_code, 403)
     
     def test_club_points_should_be_reflected_after_booking(self):
+        places = 1
         club = self.clubs[0]
+        competition = self.competitions[1]
         points = int(club.get("points"))
+        number_of_places = int(competition.get("numberOfPlaces"))
         self.client.post('/purchasePlaces', data={
             "club": club.get("name"),
-            "competition": "TEST_COMPETITION_2",
-            "places": 1
+            "competition": competition.get("name"),
+            "places": places
         })
-        self.assertEqual(int(club.get('points')), points - 1)
+        self.assertEqual(int(club.get('points')), points - places)
+        self.assertEqual(int(competition.get('numberOfPlaces')), number_of_places - places)
