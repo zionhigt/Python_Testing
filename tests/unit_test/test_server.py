@@ -39,3 +39,12 @@ class TestServer(TestCase):
                 response = self.client.post('/purchasePlaces', data=mock)
                 self.assertIn("You haven&#39;t enough of points to purshase this!", response.data.decode())
                 self.assertEqual(response.status_code, 403)
+    
+    def test_sould_not_purshase_more_than_12_places(self):
+        response = self.client.post('/purchasePlaces', data={
+            "club": "TEST_CLUB",
+            "competition": "TEST_COMPETITION",
+            "places": 13
+        })
+        self.assertIn("You cannot required more than 12 places!", response.data.decode())
+        self.assertEqual(response.status_code, 403)
