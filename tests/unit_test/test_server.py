@@ -51,7 +51,7 @@ class TestServer(TestCase):
     def test_sould_not_purshase_booking_if_date_passed(self):
         response = self.client.post('/purchasePlaces', data={
             "club": "TEST_CLUB",
-            "competition": "TEST_COMPETITION_2",
+            "competition": "TEST_COMPETITION_1",
             "places": 1
         })
         self.assertIn("Unable to require places for already been passed competion !", response.data.decode())
