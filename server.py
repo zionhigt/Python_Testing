@@ -1,5 +1,5 @@
 import json
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
 
@@ -8,12 +8,10 @@ def loadClubs(path='clubs.json'):
          listOfClubs = json.load(c)['clubs']
          return listOfClubs
 
-
 def loadCompetitions(path='competitions.json'):
     with open(path) as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
-
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -26,25 +24,23 @@ cost = 3
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+@app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = [club for club in clubs if club['email'] == request.form['email']]
     other_clubs = [club for club in clubs if club['email'] != request.form['email']]
     if len(club):
-        return render_template('welcome.html',club=club[0],competitions=competitions, clubs=other_clubs), 200
+        return render_template('welcome.html', club=club[0], competitions=competitions, clubs=other_clubs), 200
     return render_template('index.html'), 401
 
-
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
+def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        return render_template('booking.html', club=foundClub, competition=foundCompetition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
-
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
@@ -70,9 +66,7 @@ def purchasePlaces():
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions), 200
 
-
 # TODO: Add route for points display
-
 
 @app.route('/logout')
 def logout():

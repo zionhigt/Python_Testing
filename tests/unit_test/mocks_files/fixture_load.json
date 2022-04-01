@@ -3,7 +3,7 @@
         {
             "name":"TEST_CLUB_1",
             "email":"TEST_CLUB_EMAIL_1",
-            "points":"7"
+            "points":"10"
         },
         {
             "name":"TEST_CLUB_2",
@@ -20,7 +20,7 @@
         {
             "name": "TEST_COMPETITION_2",
             "date": "2025-03-27 10:00:00",
-            "numberOfPlaces": "24"
+            "numberOfPlaces": "25"
         }
     ]
 }
