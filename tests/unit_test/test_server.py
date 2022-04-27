@@ -32,10 +32,9 @@ class TestServer(TestCase):
             for cl in self.clubs:
                 mock = {
                     "club": cl.get('name'),
-                    "competition": com.get('name'),
+                    "competition": "TEST_COMPETITION_2",
                     "places": int(cl.get('points')) + 1
-                }
-                                
+                }                
                 response = self.client.post('/purchasePlaces', data=mock)
                 self.assertIn("You haven&#39;t enough of points to purshase this!", response.data.decode())
                 self.assertEqual(response.status_code, 403)
@@ -43,8 +42,17 @@ class TestServer(TestCase):
     def test_sould_not_purshase_more_than_12_places(self):
         response = self.client.post('/purchasePlaces', data={
             "club": "TEST_CLUB",
-            "competition": "TEST_COMPETITION",
+            "competition": "TEST_COMPETITION_2",
             "places": 13
         })
         self.assertIn("You cannot required more than 12 places!", response.data.decode())
+        self.assertEqual(response.status_code, 403)
+
+    def test_sould_not_purshase_booking_if_date_passed(self):
+        response = self.client.post('/purchasePlaces', data={
+            "club": "TEST_CLUB",
+            "competition": "TEST_COMPETITION_1",
+            "places": 1
+        })
+        self.assertIn("Unable to require places for already been passed competion !", response.data.decode())
         self.assertEqual(response.status_code, 403)
