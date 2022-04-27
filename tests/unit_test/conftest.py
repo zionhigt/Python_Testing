@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch
 
-
 import server
+
 
 def get_clubs():
     return [

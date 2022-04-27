@@ -25,4 +25,17 @@ class TestServer(TestCase):
 
     def test_sould_no_connect_with_email_does_not_exists(self):
         response = self.client.post("/showSummary", data={'email': "not_exists_email@test.com"})
-        assert response.status_code == 401
+        self.assertEqual(response.status_code, 401)
+    
+    def test_sould_not_purshase_more_than_I_own(self):
+        for com in self.competitions:
+            for cl in self.clubs:
+                mock = {
+                    "club": cl.get('name'),
+                    "competition": com.get('name'),
+                    "places": int(cl.get('points')) + 1
+                }
+                
+                response = self.client.post('/purchasePlaces', data=mock)
+                self.assertIn("You haven&#39;t enough of points to purshase this!", response.data.decode())
+                self.assertEqual(response.status_code, 403)
