@@ -40,7 +40,7 @@ class TestServer(TestCase):
     
     def test_sould_not_purshase_more_than_12_places(self):
         response = self.client.post('/purchasePlaces', data={
-            "club": "TEST_CLUB",
+            "club": "TEST_CLUB_2",
             "competition": "TEST_COMPETITION_2",
             "places": 13
         })
@@ -49,7 +49,7 @@ class TestServer(TestCase):
 
     def test_sould_not_purshase_booking_if_date_passed(self):
         response = self.client.post('/purchasePlaces', data={
-            "club": "TEST_CLUB",
+            "club": "TEST_CLUB_1",
             "competition": "TEST_COMPETITION_1",
             "places": 1
         })
@@ -69,3 +69,12 @@ class TestServer(TestCase):
         })
         self.assertEqual(int(club.get('points')), points - places)
         self.assertEqual(int(competition.get('numberOfPlaces')), number_of_places - places)
+    
+    def test_feature_implementation(self):
+        response = self.client.post("/showSummary", data={'email': self.clubs[0].get('email')})
+        for i, club in enumerate(self.clubs):
+            if i != 0:
+                self.assertIn(club.get("name"), response.data.decode())
+                self.assertIn(f"Points: {club.get('points')}</br>", response.data.decode())
+                self.assertIn(f"Email: {club.get('email')}", response.data.decode())
+        assert response.status_code == 200

@@ -5,8 +5,13 @@ import server
 
 clubs_obj = [
             {
-                "name":"TEST_CLUB",
-                "email":"TEST_CLUB_EMAIL",
+                "name":"TEST_CLUB_1",
+                "email":"TEST_CLUB_EMAIL_1",
+                "points":"10"
+            },
+            {
+                "name":"TEST_CLUB_2",
+                "email":"TEST_CLUB_EMAIL_2",
                 "points":"10"
             }
         ]
