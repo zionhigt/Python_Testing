@@ -1,11 +1,10 @@
 from unittest import TestCase
-
-from pytest import mark, fixture
+from pytest import mark
 
 from server import loadClubs, loadCompetitions
 import json
 
-with open("./tests/unit_test/mocks_files/fixture_load.json", 'r') as FILE_CURSOR:
+with open("./tests/mocks_files/fixture_load.json", 'r') as FILE_CURSOR:
     FILE = json.load(FILE_CURSOR)
 
 @mark.usefixtures('client')
@@ -13,11 +12,11 @@ class TestServer(TestCase):
 
     def test_loadClubs(self):
         clubs = FILE.get("clubs")
-        self.assertListEqual(loadClubs("./tests/unit_test/mocks_files/fixture_load.json"), clubs)
+        self.assertListEqual(loadClubs("./tests/mocks_files/fixture_load.json"), clubs)
 
     def test_loadCompetitions(self):
         competitions = FILE.get("competitions")
-        self.assertListEqual(loadCompetitions("./tests/unit_test/mocks_files/fixture_load.json"), competitions)
+        self.assertListEqual(loadCompetitions("./tests/mocks_files/fixture_load.json"), competitions)
 
     def test_sould_login_in_out(self):
         response = self.client.get("/logout")

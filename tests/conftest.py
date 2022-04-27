@@ -34,7 +34,6 @@ def mocks():
 @pytest.fixture(scope="class")
 def client(request):
     clubs_obj, competitions_obj = mocks()
-    print(mocks())
     with patch("server.clubs", clubs_obj):
         with patch("server.competitions", competitions_obj):
             with server.app.test_client() as client:
