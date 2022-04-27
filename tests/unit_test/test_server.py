@@ -67,7 +67,7 @@ class TestServer(TestCase):
             "competition": competition.get("name"),
             "places": places
         })
-        self.assertEqual(int(club.get('points')), points - places)
+        self.assertEqual(int(club.get('points')), points - places * self.cost)
         self.assertEqual(int(competition.get('numberOfPlaces')), number_of_places - places)
     
     def test_feature_implementation(self):
@@ -78,3 +78,18 @@ class TestServer(TestCase):
                 self.assertIn(f"Points: {club.get('points')}</br>", response.data.decode())
                 self.assertIn(f"Email: {club.get('email')}", response.data.decode())
         assert response.status_code == 200
+        
+    def test_zayn_feature_implementation(self):
+        cost = self.cost
+        places = 1
+        club = self.clubs[0]
+        points = int(club.get("points"))
+        competition = self.competitions[1]
+        number_of_places = int(competition.get("numberOfPlaces"))
+        response = self.client.post('/purchasePlaces', data={
+            "club": club.get("name"),
+            "competition": competition.get("name"),
+            "places": places
+        })
+        self.assertEqual(int(club.get('points')), points - places * cost)
+        self.assertEqual(int(competition.get('numberOfPlaces')), number_of_places - places)

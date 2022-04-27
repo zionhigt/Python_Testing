@@ -46,4 +46,5 @@ def client(request):
         with patch("server.competitions", competitions_obj):
             with server.app.test_client() as client:
                 request.cls.client = client
+                request.cls.cost = server.cost
                 yield
