@@ -1,16 +1,15 @@
 import json
 from flask import Flask,render_template,request,redirect,flash,url_for
-from datetime import datetime
 
 
-def loadClubs(path='clubs.json'):
-    with open(path) as c:
+def loadClubs():
+    with open('clubs.json') as c:
          listOfClubs = json.load(c)['clubs']
          return listOfClubs
 
 
-def loadCompetitions(path='competitions.json'):
-    with open(path) as comps:
+def loadCompetitions():
+    with open('competitions.json') as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
@@ -27,10 +26,8 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']]
-    if len(club):
-        return render_template('welcome.html',club=club[0],competitions=competitions), 200
-    return render_template('index.html'), 401
+    club = [club for club in clubs if club['email'] == request.form['email']][0]
+    return render_template('welcome.html',club=club,competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
@@ -48,25 +45,10 @@ def book(competition,club):
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-
-    competition_date = datetime.fromisoformat(competition.get("date"));
-    if competition_date < datetime.now():
-        flash('Unable to require places for already been passed competion !')
-        return render_template('welcome.html', club=club, competitions=competitions), 403
-
     placesRequired = int(request.form['places'])
-    if placesRequired > 12:
-        flash('You cannot required more than 12 places!')
-        return render_template('welcome.html', club=club, competitions=competitions), 403
-
-    if placesRequired > int(club.get("points")):
-        flash('You haven\'t enough of points to purshase this!')
-        return render_template('welcome.html', club=club, competitions=competitions), 403
-
-    competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
-    club['points'] = str(int(club['points']) - placesRequired)
+    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions), 200
+    return render_template('welcome.html', club=club, competitions=competitions)
 
 
 # TODO: Add route for points display
