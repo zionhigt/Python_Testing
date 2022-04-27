@@ -1,17 +1,23 @@
 from unittest import TestCase
 
-from pytest import mark
+from pytest import mark, fixture
 
 from server import loadClubs, loadCompetitions
+import json
 
+with open("./tests/unit_test/mocks_files/fixture_load.json", 'r') as FILE_CURSOR:
+    FILE = json.load(FILE_CURSOR)
 
-@mark.usefixtures('client', 'clubs', 'competitions')
+@mark.usefixtures('client')
 class TestServer(TestCase):
+
     def test_loadClubs(self):
-        self.assertListEqual(loadClubs("./tests/unit_test/mocks_files/fixture_load.json"), self.clubs)
+        clubs = FILE.get("clubs")
+        self.assertListEqual(loadClubs("./tests/unit_test/mocks_files/fixture_load.json"), clubs)
 
     def test_loadCompetitions(self):
-        self.assertListEqual(loadCompetitions("./tests/unit_test/mocks_files/fixture_load.json"), self.competitions)
+        competitions = FILE.get("competitions")
+        self.assertListEqual(loadCompetitions("./tests/unit_test/mocks_files/fixture_load.json"), competitions)
 
     def test_sould_login_in_out(self):
         response = self.client.get("/logout")
@@ -46,7 +52,7 @@ class TestServer(TestCase):
         })
         self.assertIn("You cannot required more than 12 places!", response.data.decode())
         self.assertEqual(response.status_code, 403)
-
+    
     def test_sould_not_purshase_booking_if_date_passed(self):
         response = self.client.post('/purchasePlaces', data={
             "club": "TEST_CLUB_1",
