@@ -3,9 +3,7 @@ from unittest.mock import patch
 
 import server
 
-
-def get_clubs():
-    return [
+clubs_obj = [
             {
                 "name":"TEST_CLUB",
                 "email":"TEST_CLUB_EMAIL",
@@ -13,8 +11,7 @@ def get_clubs():
             }
         ]
 
-def get_competitions():
-    return [
+competitions_obj = [
             {
                 "name": "TEST_COMPETITION_1",
                 "date": "2020-03-27 10:00:00",
@@ -27,20 +24,21 @@ def get_competitions():
             }
         ]
 
+
 @pytest.fixture(scope="class")
 def clubs(request):
-    request.cls.clubs = get_clubs()
+    request.cls.clubs = clubs_obj
     yield
 
 @pytest.fixture(scope="class")
 def competitions(request):
-    request.cls.competitions =  get_competitions()
+    request.cls.competitions = competitions_obj
     yield
 
 @pytest.fixture(scope="class")
 def client(request):
-    with patch("server.clubs", get_clubs()):
-        with patch("server.competitions", get_competitions()):
+    with patch("server.clubs", clubs_obj):
+        with patch("server.competitions", competitions_obj):
             with server.app.test_client() as client:
                 request.cls.client = client
                 yield
