@@ -30,6 +30,9 @@ def showSummary():
     other_clubs = [club for club in clubs if club['email'] != request.form['email']]
     if len(club):
         return render_template('welcome.html', club=club[0], competitions=competitions, clubs=other_clubs), 200
+        
+    # SOUTENANCE Affiche un message en cas d'erreur
+    flash('Invalid indentifiant!')
     return render_template('index.html'), 401
 
 @app.route('/book/<competition>/<club>')
@@ -57,12 +60,23 @@ def purchasePlaces():
         flash('You cannot required more than 12 places!')
         return render_template('welcome.html', club=club, competitions=competitions), 403
 
-    if placesRequired * cost > int(club.get("points")):
+    amount = placesRequired * cost
+    if amount > int(club.get("points")):
         flash('You haven\'t enough of points to purshase this!')
         return render_template('welcome.html', club=club, competitions=competitions), 403
 
+    # SOUTENANCE: Plus de places que disponibles
+    if amount > int(competition.get("numberOfPlaces")):
+        flash(f'More than available: max is {competition.get("numberOfPlaces")}')
+        return render_template('welcome.html', club=club, competitions=competitions), 403
+    
+    # SOUTENANCE: Valeur négative
+    if amount < 1:
+        flash('Unexpected value!')
+        return render_template('welcome.html', club=club, competitions=competitions), 403
+
     competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
-    club['points'] = str(int(club['points']) - placesRequired * cost)
+    club['points'] = str(int(club['points']) - amount)
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions), 200
 
